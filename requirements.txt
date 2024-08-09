@@ -1,0 +1,7 @@
+fastapi[standard]==0.112.0
+pydantic==2.8.2
+aiohttp
+aiodns
+SQLAlchemy
+sqlalchemy-utils
+psycopg2-binary
