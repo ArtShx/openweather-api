@@ -3,10 +3,9 @@ This projects is a web server providing 2 endpoints that collects data from Open
 
 ## Setup
 ```
-git clone https://github.com/ArtShx/openweather-api
+git clone https://github.com/ArtShx/openweather-api & cd openweather-api
 # edit the env file by setting up you key of  OpenWeather API
-docker compose build
-docker compose up
+docker compose up --build
 ```
 
 
