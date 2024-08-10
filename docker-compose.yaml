@@ -1,12 +1,15 @@
 version: "3.8"
 services:
-  # api:
-  #   build:
-  #     context: .
-  #   container_name: api
-  #   ports:
-  #     - '8000:8000'
-  #   restart: always
+  api:
+    build:
+      context: .
+    container_name: api
+    ports:
+      - '8000:8000'
+    restart: no
+    depends_on:
+      postgres:
+        condition: service_started
   postgres:
     image: postgres:14-alpine
     restart: always

@@ -6,12 +6,9 @@ from collections import deque
 
 import aiohttp
 
-from .repository.city_repository import CityRepository
-from .schemas.city_schema import CityUpdate
-from .config.database import get_db
-
-# from .service.process_service import ProcessService
-from .schemas.process_schema import ProcessUpdate, Weather
+from repository.city_repository import CityRepository
+from schemas.city_schema import CityUpdate
+from schemas.process_schema import Weather
 
 if "OPENWEATHER_KEY" not in os.environ:
     print("Failed to read OpenWeather API Key from env file")
@@ -24,7 +21,7 @@ OPENWEATHER_KEY = os.environ["OPENWEATHER_KEY"]
 
 class OpenWeatherAPI:
     uri: str = "http://api.openweathermap.org/data/2.5/weather"
-    semaphore = asyncio.Semaphore(60)
+    # semaphore = asyncio.Semaphore(60)
     queue = deque()
 
     @classmethod
@@ -46,35 +43,33 @@ class OpenWeatherAPI:
                 raise Exception("Uncaught exception, status:", response.status)
 
     @classmethod
-    async def start_process(cls) -> List[Weather]:
+    async def start_process(cls, session) -> List[Weather]:
         """
         Process Weather requests.
         This function manages the OpenWeatherAPI request limit.
         """
         # TODO: not ideal to use Repository objects directly
-        session = next(get_db())
         city_repo = CityRepository(session)
         while True:
             if cls.queue:
-                async with cls.semaphore:
-                    # Get the next request from the queue
-                    user_id, city_id = cls.queue.popleft()
-                    print(f"Processing City: {city_id}")
-
-                    # TODO: do not make more than 1 request for the same city in a small timespan
-                    # in this case maybe just replicate the weather info
-                    response = await OpenWeatherAPI.get(city_id)
-                    city_repo.update(
-                        CityUpdate(
-                            user_id=user_id,
-                            city_id=city_id,
-                            temperature=response.temperature,
-                            humidity=response.humidity,
-                        )
+                # async with cls.semaphore:
+                # Get the next request from the queue
+                user_id, city_id = cls.queue.popleft()
+                # TODO: do not make more than 1 request for the same city in a small timespan
+                # in this case maybe just replicate the weather info
+                response = await OpenWeatherAPI.get(city_id)
+                city_repo.update(
+                    CityUpdate(
+                        user_id=user_id,
+                        city_id=city_id,
+                        temperature=response.temperature,
+                        humidity=response.humidity,
                     )
+                )
 
                 await asyncio.sleep(1)
-            await asyncio.sleep(0.5)
+            else:
+                await asyncio.sleep(0.1)
 
     @classmethod
     def add_to_queue(cls, user_id: int, cities_id: List[int]) -> None:

@@ -3,13 +3,14 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import PrimaryKeyConstraint
 
-from ..config.database import Base
+from config.database import Base
 
 
 class City(Base):
     __tablename__ = "city"
     city_id = Column(Integer, primary_key=True)
-    date = Column(DateTime, nullable=False)
+    create_date = Column(DateTime, nullable=False)
+    date = Column(DateTime)
     temperature = Column(Float)
     humidity = Column(Integer)
 

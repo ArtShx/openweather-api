@@ -33,6 +33,7 @@ class ProcessGetInput(BaseModel):
 class ProcessGetOutput(BaseModel):
     user_id: Union[int, None]
     total_cities: int
+    completed: int
     percentage: float
     cities: List[Weather]
 

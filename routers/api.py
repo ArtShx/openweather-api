@@ -1,5 +1,5 @@
-from .v1 import process
-from ..utils.init_db import create_tables
+from routers.v1 import process
+from utils.init_db import create_tables
 
 from fastapi import APIRouter
 

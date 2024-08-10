@@ -1,10 +1,10 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from ..repository.process_repository import ProcessRepository
-from ..repository.city_repository import CityRepository
-from ..schemas.city_schema import CityCreate, CityUpdate
-from ..schemas.process_schema import (
+from repository.process_repository import ProcessRepository
+from repository.city_repository import CityRepository
+from schemas.city_schema import CityCreate, CityUpdate
+from schemas.process_schema import (
     ProcessCreateInput,
     ProcessCreateOutput,
     ProcessGetInput,
@@ -12,7 +12,7 @@ from ..schemas.process_schema import (
     ProcessUpdate,
     Weather,
 )
-from ..weather_api import OpenWeatherAPI
+from weather_api import OpenWeatherAPI
 
 
 class ProcessService:
@@ -37,7 +37,7 @@ class ProcessService:
         total_cities = len(all_cities)
         if total_cities == 0:
             return ProcessGetOutput(
-                user_id=None, percentage=0, total_cities=0, cities=[]
+                user_id=None, percentage=0, total_cities=0, completed=0, cities=[]
             )
 
         total_completed = 0
@@ -55,11 +55,12 @@ class ProcessService:
                     )
                 )
 
-        percentage = (total_completed / total_cities) * 100
+        percentage = round((total_completed / total_cities) * 100, 2)
         return ProcessGetOutput(
             user_id=user_id,
             percentage=percentage,
             total_cities=total_cities,
+            completed=total_completed,
             cities=cities,
         )
 

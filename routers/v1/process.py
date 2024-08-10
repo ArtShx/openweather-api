@@ -2,14 +2,14 @@ from typing import List
 
 from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
-from ...config.database import get_db
-from ...schemas.process_schema import (
+from config.database import get_db
+from schemas.process_schema import (
     ProcessCreateInput,
     ProcessCreateOutput,
     ProcessGetInput,
     ProcessGetOutput,
 )
-from ...service.process_service import ProcessService
+from service.process_service import ProcessService
 
 
 router = APIRouter(prefix="/process")
@@ -26,7 +26,7 @@ async def create_process(
 
 @router.get("", status_code=200, response_model=ProcessGetOutput)
 async def get_process(
-    data: ProcessGetInput, session: Session = Depends(get_db)
+    data: ProcessGetInput = Depends(), session: Session = Depends(get_db)
 ) -> ProcessGetOutput:
     _service = ProcessService(session)
     return _service.get_completed_process(data.user_id)

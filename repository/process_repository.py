@@ -2,8 +2,8 @@ from sqlalchemy.orm import Session
 
 from datetime import datetime
 
-from ..models.process import Process
-from ..schemas.process_schema import ProcessCreateInput, ProcessCreateOutput
+from models.process import Process
+from schemas.process_schema import ProcessCreateInput, ProcessCreateOutput
 
 
 class ProcessRepository:

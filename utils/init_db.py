@@ -1,6 +1,6 @@
-from ..config.database import engine
-from ..models.process import Process
-from ..models.city import City
+from config.database import engine
+from models.process import Process
+from models.city import City
 
 
 def create_tables():
