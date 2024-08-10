@@ -32,6 +32,8 @@ Once the application is up, check the docs and available endpoints at `http://0.
 - Postgres (Data Persistence);
 - FastAPI (Web Framework supporting HTTP protocol);
 - SQLAlchemy for Database integration;
+- Pytest (unit tests);
+- Black (code formating)
 
 
 ## Code Architecture

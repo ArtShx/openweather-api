@@ -40,7 +40,7 @@ async def test_weather_api(db_session):
 
     while not finished and elapsed_time < max_exceeded_time:
         completed = proc_svc.get_completed_process(new_process.user_id)
-        assert completed.total_cities == len(new_process.cities_id) 
+        assert completed.total_cities == len(new_process.cities_id)
         finished = completed.percentage == 100
         elapsed_time = time.time() - start_time
         await asyncio.sleep(0.2)
